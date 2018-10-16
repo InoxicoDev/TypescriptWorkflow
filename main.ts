@@ -30,7 +30,7 @@ class Startup {
         // Show workflow with last step undone because of change 
         Startup.stateMachine.DisplayEntireWorkflow();
 
-        var stepOutputModel = Startup.stateMachine.supportStep.Model;
+        let stepOutputModel = Startup.stateMachine.supportStep.Model;
         console.log(stepOutputModel);
 
         return 0;
