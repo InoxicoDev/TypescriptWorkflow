@@ -28,7 +28,7 @@ node main.js
     * Current step (Status)
     * Starting Step (Root step)
     * Holistic transition validation
-    * Parent step invalidation (Propogate dirty to children, revoking completed state)
+    * Parent step invalidation (Propogate dirty to children, revoking completed state od children when parent change)
     
 ```TypeScript
     Startup.stateMachine.startStep.CompleteStep(true); // TODO: Model should be optional
