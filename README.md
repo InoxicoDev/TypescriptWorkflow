@@ -7,3 +7,19 @@
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/BuildTypescript.png" width="500">
 * In Powershell terminal run "node main.js"
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/Output.PNG" width="500">
+
+
+## What does this approach give us:
+
+* For each STEP
+    * Individual model output on complete (Once done anyone can access this model)
+    * Can only be complete when ready, only ready if parent is active step
+* For each TRANSITION
+    * Each transition matches to the initialization contract of the next step (Moving them around will break design time)
+    * Cannot change current state unless from a valid transition (Complete parent with ready child)
+    * Optional validation of destination initialization payload
+* For the WORKFLOW
+    * Tree structured process flow (Not liniar)
+    * Current step (Status)
+    * Starting Step (Root step)
+    * Holistic transition validation
