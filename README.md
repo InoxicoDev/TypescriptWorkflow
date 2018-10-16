@@ -5,7 +5,12 @@
 * Clone repo and open folder in VS Code
 * Build Typescript code (Cntr+Shift+B)
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/BuildTypescript.png" width="500">
-* In Powershell terminal run "node main.js"
+* Run the following in the Powershell terminal
+
+```bash
+node main.js
+```
+
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/Output.PNG" width="500">
 
 
@@ -25,3 +30,8 @@
     * Holistic transition validation
     * Parent step invalidation (Propogate dirty to children, revoking completed state)
     
+```TypeScript
+    Startup.stateMachine.startStep.CompleteStep(true); // TODO: Model should be optional
+    let supportRequest = new rq.Workflow.SupportRequest("AC001");
+    Startup.stateMachine.startStep.Support.Transition(supportRequest);
+```
