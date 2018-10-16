@@ -23,13 +23,22 @@ export namespace Workflow {
             return this._isCompleted;
         };
         
-        private _model: Tout | null;
+        protected _model: Tout | null;
         get Model(): Tout | null {
             return this._model;
         }
 
-        CompleteStep(model: Tout) {
-            console.log(">> Completing step [" + this.Name + "] with [" + model + "]");                  
+        CompleteStep(model: Tout | null = null) {
+            if (model != null)
+            {
+                this._model = model;
+            }
+
+            if (this.Model == null) {
+                throw new Error("Cannot complete step [" + this.Name + "] until output model have been populated");
+            }
+
+            console.log(">> Completing step [" + this.Name + "] with [" + this.Model + "]");                  
 
             let parentIsStartingStep = false;
             let firstStep = this.WorkflowScope.FirstStep();
@@ -74,7 +83,6 @@ export namespace Workflow {
                 this.NotifyObservers();
             }  
 
-            this._model = model;
             this._isCompleted = true;
         }      
 

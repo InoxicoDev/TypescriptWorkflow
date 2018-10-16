@@ -50,7 +50,7 @@ export namespace Workflow.Steps {
         }    
     }
 
-    export class Support extends st.Workflow.StepBase<rq.Workflow.SupportRequest, boolean> {   
+    export class Support extends st.Workflow.StepBase<rq.Workflow.SupportRequest, string> {   
         static readonly Name: string = "SupportStep";
         
         constructor(        
@@ -69,6 +69,7 @@ export namespace Workflow.Steps {
 
         Initiate(input: rq.Workflow.SupportRequest) {
             console.log(">> Initiating [" + this.Name + "] Step for Account [" + input.AccountNumber + "]...");
+            this._model = "Customer [" + input.AccountNumber + "] has a good rating";
         }   
     }
 
