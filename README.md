@@ -32,7 +32,7 @@ node main.js
     * Parent step invalidation (Propogate dirty to children, revoking completed state od children when parent change)
     
 ```TypeScript
-    Startup.stateMachine.startStep.CompleteStep(true); // TODO: Model should be optional
+    Startup.stateMachine.startStep.CompleteStep(); // Model in this case is optional
     let supportRequest = new rq.Workflow.SupportRequest("AC001");
     Startup.stateMachine.startStep.Support.Transition(supportRequest);
 ```
