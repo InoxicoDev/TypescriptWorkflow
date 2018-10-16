@@ -4,7 +4,6 @@ import * as t from "../Common/Transition";
 import * as rq from "../TickedWorkflow/Contracts/SupportRequest";
 
 export namespace Workflow {
-
     export class TicketStateMachine extends sm.Workflow.StateMachineBase {            
 
         _rootStep: st.Workflow.Steps.Start | null = null;
@@ -76,7 +75,6 @@ export namespace Workflow {
             this.RegisterStep(step);      
             this._supportProductBStep = step;
         }
-
 
         constructor() { 
             super("Job Ticket");

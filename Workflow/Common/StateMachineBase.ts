@@ -65,12 +65,12 @@ export namespace Workflow {
 			return list;
 		}
 
-		RegisterTransition<Q>(transition: tr.Workflow.Transition<Q>): tr.Workflow.Transition<Q>  {
+		RegisterTransition<Tin>(transition: tr.Workflow.Transition<Tin>): tr.Workflow.Transition<Tin>  {
 			this.Transitions.push(transition);
 			return transition;
 		}
 
-		RegisterStep<T, TY>(step :st.Workflow.StepBase<T, TY>): st.Workflow.StepBase<T, TY> {
+		RegisterStep<Tin, Tout>(step :st.Workflow.StepBase<Tin, Tout>): st.Workflow.StepBase<Tin, Tout> {
 	
 			if (this._currentStep != null) {
 				let foundParent: boolean = false;
@@ -116,7 +116,7 @@ export namespace Workflow {
 				throw new Error('Step name already exists! [' + step.Name + ']');
 			}
 			
-			if (this.Steps != null) {
+			if (this.Steps != null) {				
 				this.Steps.push(step);
 			}
 			
@@ -163,20 +163,26 @@ export namespace Workflow {
 			path = path + parent.Name;
 			level++;
 
-			for (let index = 0; index < level; index++) {
-				message = message += '*';			
+			for (let index = 0; index < level; index++) {			
+				if (index == level - 1) {
+					message += "|\_";	
+					continue;
+				}
+
+				message += "|";
 			}
 
-			message += '[' + path + '] Completed [' + parent.IsCompleted() + '] IsReady [' + parent.IsReady + ']';
+			message += " [" + path + "] Completed [" + parent.IsCompleted() + "] IsReady [" + parent.IsReady + "]";
 			console.log(message);
 		
 			let children = this.GetChildren(parent.Name);
 			
+			for (let index = 0; index < children.length; index++) {
+				const child = children[index];
 
-			children.forEach(child => {
-				childPosition++;
-				this.BuildWorkFlow(child, path, level, childPosition);
-			});
+				let moreSiblings = index < (children.length - 1);	
+				this.BuildWorkFlow(child, path, level, childPosition);		
+			}
 		}
 
 		private DisplayFromStep(step: s.Workflow.IStep) {
@@ -207,6 +213,5 @@ export namespace Workflow {
 
 			this.DisplayFromStep(currentStep);
 		}
-
 	}
 }

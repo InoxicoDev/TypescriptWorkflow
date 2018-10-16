@@ -5,7 +5,7 @@ import * as rq from "./Contracts/SupportRequest"
 
 export namespace Workflow.Steps { 
     
-    export class Start extends st.Workflow.StepBase<boolean, string> { 
+    export class Start extends st.Workflow.StepBase<string, boolean> { 
         static readonly Name: string = "StartStep";
 
         constructor(    
@@ -23,13 +23,12 @@ export namespace Workflow.Steps {
         Sales: tran.Workflow.Transition<string>;
         Support: tran.Workflow.Transition<rq.Workflow.SupportRequest>;
 
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step...");
-            this._parentName = parentName;
         }   
     }
 
-    export class Sales extends st.Workflow.StepBase<boolean, string> {  
+    export class Sales extends st.Workflow.StepBase<string, boolean> {  
         static readonly Name: string = "SalesStep";
 
         constructor(    
@@ -46,13 +45,12 @@ export namespace Workflow.Steps {
         SalesProductA: tran.Workflow.Transition<string>;
         SalesProductB: tran.Workflow.Transition<string>;
 
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step with [" + input + "]...");
-            this._parentName = parentName;
         }    
     }
 
-    export class Support extends st.Workflow.StepBase<boolean, rq.Workflow.SupportRequest> {   
+    export class Support extends st.Workflow.StepBase<rq.Workflow.SupportRequest, boolean> {   
         static readonly Name: string = "SupportStep";
         
         constructor(        
@@ -69,13 +67,12 @@ export namespace Workflow.Steps {
         SupportProductA: tran.Workflow.Transition<string>;
         SupportProductB: tran.Workflow.Transition<string>;
 
-        Initiate(input: rq.Workflow.SupportRequest, parentName: string) {
+        Initiate(input: rq.Workflow.SupportRequest) {
             console.log(">> Initiating [" + this.Name + "] Step for Account [" + input.AccountNumber + "]...");
-            this._parentName = parentName;
         }   
     }
 
-    export class SupportProductA extends st.Workflow.StepBase<boolean, string> {
+    export class SupportProductA extends st.Workflow.StepBase<string, boolean> {
         static readonly Name: string = "SupportProductAStep";
 
         constructor(        
@@ -83,13 +80,12 @@ export namespace Workflow.Steps {
             super(SupportProductA.Name, st.Workflow.DependantType.AllParents, parentContext);
         }
 
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step with [" + input + "]...");
-            this._parentName = parentName;
         }     
     }
 
-    export class SupportProductB extends st.Workflow.StepBase<boolean, string> {
+    export class SupportProductB extends st.Workflow.StepBase<string, boolean> {
         static readonly Name: string = "SupportProductBStep";
 
         constructor(        
@@ -97,13 +93,12 @@ export namespace Workflow.Steps {
             super(SupportProductB.Name, st.Workflow.DependantType.AllParents, parentContext);
         }
 
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step with [" + input + "]...");
-            this._parentName = parentName;
         }     
     }
 
-    export class SellProductA extends st.Workflow.StepBase<boolean, string> {
+    export class SellProductA extends st.Workflow.StepBase<string, boolean> {
         static readonly Name: string = "SellProductAStep";
 
         constructor(        
@@ -111,13 +106,12 @@ export namespace Workflow.Steps {
             super(SellProductA.Name, st.Workflow.DependantType.AllParents, parentContext);
         }
    
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step with [" + input + "]...");
-            this._parentName = parentName;
         }    
     }
 
-    export class SellProductB extends st.Workflow.StepBase<boolean, string> {
+    export class SellProductB extends st.Workflow.StepBase<string, boolean> {
         static readonly Name: string = "SellProductBStep";
 
         constructor(        
@@ -125,9 +119,8 @@ export namespace Workflow.Steps {
             super(SellProductB.Name, st.Workflow.DependantType.AllParents, parentContext);
         }
    
-        Initiate(input: string, parentName: string) {
+        Initiate(input: string) {
             console.log(">> Initiating [" + this.Name + "] Step with [" + input + "]...");
-            this._parentName = parentName;
         }    
     }
 
