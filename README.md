@@ -23,3 +23,5 @@
     * Current step (Status)
     * Starting Step (Root step)
     * Holistic transition validation
+    * Parent step invalidation (Propogate dirty to children, revoking completed state)
+    
