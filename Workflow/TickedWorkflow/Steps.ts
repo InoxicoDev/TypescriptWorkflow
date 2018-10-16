@@ -23,8 +23,9 @@ export namespace Workflow.Steps {
         Sales: tran.Workflow.Transition<string>;
         Support: tran.Workflow.Transition<rq.Workflow.SupportRequest>;
 
-        Initiate(input: string) {
+        Initiate() {
             console.log(">> Initiating [" + this.Name + "] Step...");
+            this._model = true; // Now you don't have to set it on completion
         }   
     }
 

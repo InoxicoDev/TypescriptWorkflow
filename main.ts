@@ -8,7 +8,8 @@ class Startup {
 
     private static CompleteWorkflow() {
 
-        Startup.stateMachine.startStep.CompleteStep(true); // TODO: Model should be optional
+        Startup.stateMachine.startStep.Initiate()
+        Startup.stateMachine.startStep.CompleteStep();
         let supportRequest = new rq.Workflow.SupportRequest(this.AccountNumber);
         Startup.stateMachine.startStep.Support.Transition(supportRequest);
        

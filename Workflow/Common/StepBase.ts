@@ -35,7 +35,7 @@ export namespace Workflow {
             }
 
             if (this.Model == null) {
-                throw new Error("Cannot complete step [" + this.Name + "] until output model have been populated");
+                throw new Error("Cannot complete step [" + this.Name + "] until output model have been set. Parameter [" + model + "] Model [" + this.Model + "]");
             }
 
             console.log(">> Completing step [" + this.Name + "] with [" + this.Model + "]");                  
@@ -123,6 +123,6 @@ export namespace Workflow {
             this.NotifyObservers();
         }
     
-        abstract Initiate(input: Tin) :any;
+        abstract Initiate(input: Tin | null) :any;
     }
 }
