@@ -11,7 +11,7 @@
 node main.js
 ```
 
-<img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/Output.PNG" width="500">
+<img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/Output.Updated.PNG" width="500">
 
 
 ## What does this approach give us:
