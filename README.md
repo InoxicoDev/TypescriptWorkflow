@@ -5,7 +5,8 @@
 * Clone repo and open folder in VS Code
 * Build Typescript code (Cntr+Shift+B)
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/BuildTypescript.png" width="500">
-* Run the following in the Powershell terminal
+
+### Run the following in the Powershell terminal
 
 ```bash
 node main.js
@@ -35,3 +36,13 @@ node main.js
     let supportRequest = new rq.Workflow.SupportRequest("AC001");
     Startup.stateMachine.startStep.Support.Transition(supportRequest);
 ```
+
+### Easily get access to the step output (model):
+```TypeScript
+   let stepOutputModel = Startup.stateMachine.supportStep.Model;
+   console.log(stepOutputModel);
+```
+
+
+
+
