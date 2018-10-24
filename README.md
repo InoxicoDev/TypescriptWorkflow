@@ -1,7 +1,17 @@
 # Typescript Workflow Example
 
 ## Setup
-* Install latest version of NodeJS / NPM
+* Install latest version of [NodeJS LTS](https://nodejs.org/en)
+* Install latest version of TypeScript (From PowerShell)
+```powershell
+npm install -g typescript
+```
+* Update NPM (Run PowerShell as Administrator)
+```powershell
+Set-ExecutionPolicy Unrestricted -Scope CurrentUser -Force
+npm install --global --production npm-windows-upgrade
+npm-windows-upgrade --npm-version latest
+```
 * Clone repo and open folder in VS Code
 * Build Typescript code (Cntr+Shift+B)
 <img src="https://github.com/InoxicoDev/TypescriptWorkflow/blob/master/Readme/BuildTypescript.png" width="500">
