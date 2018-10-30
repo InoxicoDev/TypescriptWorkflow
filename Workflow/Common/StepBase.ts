@@ -99,6 +99,12 @@ export namespace Workflow {
         }
 
         RegisterObserver(observer: obvr.Workflow.IObserver) {
+            for (let i = 0; i < this._observers.length; i++) {
+                if (this._observers[i] === observer) {
+                    return;
+                }
+            }
+
             this._observers.push(observer);
         }
 
