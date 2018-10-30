@@ -6,7 +6,7 @@ export namespace Workflow {
 
         RegisterObserver(observer: obvr.Workflow.IObserver) : any;
         RemoveObserver(observer: obvr.Workflow.IObserver) : any;
-        NotifyObservers() : any;
+        NotifyObservers(notifyId: string) : any;
     }
 
 }

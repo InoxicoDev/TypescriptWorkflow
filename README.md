@@ -5,6 +5,7 @@
 * Install latest version of TypeScript (From PowerShell)
 ```powershell
 npm install -g typescript
+npm install guid-typescript --save
 ```
 * Update NPM (Run PowerShell as Administrator)
 ```powershell

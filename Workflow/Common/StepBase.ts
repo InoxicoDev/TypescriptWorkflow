@@ -1,8 +1,9 @@
-import * as ob from "../Common/IObservable";
-import * as obvr from "../Common/IObserver";
-import * as t from "../Common/ITransition";
-import * as init from "../Common/IStepInit";
-import * as smbase from "../Common/StateMachineBase"
+import * as ob from "./IObservable";
+import * as obvr from "./IObserver";
+import * as t from "./ITransition";
+import * as init from "./IStepInit";
+import * as smbase from "./StateMachineBase"
+import { Guid } from "guid-typescript";
 
 export namespace Workflow {
       export const enum DependantType { None, AllParents }
@@ -17,6 +18,7 @@ export namespace Workflow {
         Transitions: t.Workflow.ITransition[];
         // Not crazy about this, would have prefered a closure but with Lexical Scoping this is not transferred 
         WorkflowScope: smbase.Workflow.StateMachineBase;
+        PreviousNotifyId: string = "";
 
         private _isCompleted: boolean = false;
         IsCompleted(): boolean {
@@ -80,7 +82,7 @@ export namespace Workflow {
             }       
        
             if (this.IsCompleted() == true) {
-                this.NotifyObservers();
+                this.NotifyObservers(Guid.create().toString());
             }  
 
             this._isCompleted = true;
@@ -100,9 +102,9 @@ export namespace Workflow {
             this._observers.push(observer);
         }
 
-        NotifyObservers() {
+        NotifyObservers(notifyId: string) {
             for (let i = 0; i < this._observers.length; i++) {
-                this._observers[i].ReceiveNotification(this.Name);
+                this._observers[i].ReceiveNotification(this.Name, notifyId);
             }
         }
 
@@ -114,13 +116,20 @@ export namespace Workflow {
             }
         }
 
-        ReceiveNotification<T>(message: T): void {            
+        ReceiveNotification<T>(message: T, notifyId: string): void {
+            if(notifyId == this.PreviousNotifyId) {
+                console.log("Already processed");
+                return;
+            }
+
+            this.PreviousNotifyId = notifyId;
+
             if (this.DepenantType == DependantType.AllParents) {
                 console.log('Step [' + this.Name + '] is no longer completed because its parent step [' + message + '] has been changed');
                 this._isCompleted = false;
             }
 
-            this.NotifyObservers();
+            this.NotifyObservers(notifyId);
         }
     
         abstract Initiate(input: Tin | null) :any;
