@@ -6,7 +6,9 @@ import * as st from "../Common/StepBase";
 export namespace Workflow {
 
 	export abstract class StateMachineBase {
-		Name: string;		
+		Name: string;
+		IsValid: boolean | null = null;
+
 		private _currentStep: s.Workflow.IStep | null = null;
 		public CurrentStep(): s.Workflow.IStep | null  {
 			return this._currentStep;
@@ -27,6 +29,23 @@ export namespace Workflow {
 		}
 
 		public StepTransition(nextStepName: string): any {
+			
+			if (this.IsValid == null) {
+				let exceptions = this.ValidateWorkflow();
+
+				if (exceptions.length > 0) {
+					console.error("Workflow invalid:");
+
+					exceptions.forEach(ex => {
+						console.error("- " + ex);
+					});
+				}				
+			}
+
+			if (this.IsValid == false) {
+				throw new Error("Workflow invalid, cannot make any transition.");
+			}
+
 			let currentStepName = (this._currentStep != null) ? this._currentStep.Name : "N/A";
 			let foundMatchingTransition = false;
 
@@ -51,6 +70,82 @@ export namespace Workflow {
 			}
 			
 			this._currentStep = nextStep;		
+		}
+
+		ValidateStep(step: s.Workflow.IStep): boolean {
+			let transitions = this.GetStepTransitions(step.Name);
+			let foundOne: boolean = false;
+
+			if (transitions.length == 0)
+			{
+				return true;
+			}
+
+			transitions.forEach(transition => {
+
+				if (transitions.length == 1) {
+					transition.IsPrimary = true;
+				}
+
+				if (!foundOne && transition.IsPrimary) {
+					foundOne = true;
+				}
+				else if (transition.IsPrimary) {
+					console.log("Multiple Primary transitions found [" + step.Name + "]");
+					return false;
+				}				
+			});
+
+			if (!foundOne) { 
+				console.log("No Primary transitions found [" + step.Name + "]");
+			}
+
+			return foundOne;
+		}
+
+		ValidateRecursive(step: s.Workflow.IStep): string[] {
+			let steps = this.GetChildren(step.Name);
+			let exceptions : Array<string> = [];
+
+			steps.forEach(step => {
+				if (!this.ValidateStep(step)) {
+					exceptions.push("Transition for step [" + step.Name + "] incorrect. Must have (only) one primary transition.");
+				}
+				
+				let childExceptions = this.ValidateRecursive(step);
+
+				childExceptions.forEach(ex => {
+					exceptions.push(ex);
+				});				
+			});
+			
+			return exceptions;			
+		}
+
+		ValidateWorkflow(): string[] {
+			let exceptions: Array<string> = [];
+
+			if (this.FirstStep() == null) {
+				exceptions.push("No root node specified.");
+				return exceptions;
+			}
+
+			let firstStep = <s.Workflow.IStep>this.FirstStep();
+
+			if (!this.ValidateStep(firstStep)) {
+				exceptions.push("Transition for step [" + firstStep.Name + "] incorrect. Must have only one primary transition.");
+			}
+			
+			exceptions = this.ValidateRecursive(firstStep);	
+
+			if (exceptions.length > 0) {
+				this.IsValid = false;
+			}
+			else {
+				this.IsValid = true;
+			}
+
+			return exceptions;
 		}
 
 		GetStepTransitions(stepName: string): t.Workflow.ITransition[] {
@@ -154,11 +249,11 @@ export namespace Workflow {
 		}
 		
 		BuildWorkFlow(parent: s.Workflow.IStep, path: string, level: number, position: number) {
-			let message: string = '';
+			let message: string = "";
 			let childPosition: number = 0;
 			
-			if (path != '') {				
-				path = path + '.';
+			if (path != "") {				
+				path = path + ".";
 			}
 			path = path + parent.Name;
 			level++;
@@ -180,7 +275,6 @@ export namespace Workflow {
 			for (let index = 0; index < children.length; index++) {
 				const child = children[index];
 
-				let moreSiblings = index < (children.length - 1);	
 				this.BuildWorkFlow(child, path, level, childPosition);		
 			}
 		}
@@ -212,6 +306,26 @@ export namespace Workflow {
 			}
 
 			this.DisplayFromStep(currentStep);
+		}
+
+		DisplayPrimaryPath(step: s.Workflow.IStep = <s.Workflow.IStep>this.FirstStep(), primaryPaths: string[] = []) : string[] {
+			let transitions = this.GetStepTransitions(step.Name);
+			let primPath: Array<string> = [];			
+
+			transitions.forEach(childTransition => {
+				if (childTransition.IsPrimary) {
+					let child = <s.Workflow.IStep>this.GetStep(childTransition.ToStepName);
+					let paths = this.DisplayPrimaryPath(child, primaryPaths);
+
+					paths.forEach(path => {
+						primPath.push(path);
+					});
+				}
+			});
+
+			primPath.push(step.Name);
+
+			return primPath;
 		}
 	}
 }

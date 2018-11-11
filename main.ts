@@ -8,6 +8,13 @@ class Startup {
 
     private static CompleteWorkflow() {
 
+        let menus = Startup.stateMachine.DisplayPrimaryPath().reverse();
+        console.log();
+        console.log("------------------------------------------------------------");
+        console.log("Menu paths: " + menus.join(" > "));
+        console.log("------------------------------------------------------------");
+        console.log();
+
         Startup.stateMachine.startStep.Initiate()
         Startup.stateMachine.startStep.CompleteStep();
         let supportRequest = new rq.Workflow.SupportRequest(this.AccountNumber);

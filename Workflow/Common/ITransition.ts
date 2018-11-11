@@ -5,5 +5,6 @@ export namespace Workflow {
     export interface ITransition {
         FromStepName: string | null;
         ToStepName: string;
+        IsPrimary: boolean;
     }
 }

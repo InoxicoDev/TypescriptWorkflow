@@ -87,15 +87,15 @@ export namespace Workflow {
                         return false;
                     }
                     return true;
-                }));            
+                }, true));            
             this.startStep = new st.Workflow.Steps.Start(salesTransition, supportTransition, this);    
 
-            let salesProductATransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Sales.Name, st.Workflow.Steps.SellProductA.Name, this));
+            let salesProductATransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Sales.Name, st.Workflow.Steps.SellProductA.Name, this, null, true));
             let salesProductBTransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Sales.Name, st.Workflow.Steps.SellProductB.Name, this));            
             this.salesStep = new st.Workflow.Steps.Sales(salesProductATransition, salesProductBTransition, this);  
 
             let supportProductATransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Support.Name, st.Workflow.Steps.SupportProductA.Name, this));
-            let supportProductBTransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Support.Name, st.Workflow.Steps.SupportProductB.Name, this));            
+            let supportProductBTransition = this.RegisterTransition(new t.Workflow.Transition<string>(st.Workflow.Steps.Support.Name, st.Workflow.Steps.SupportProductB.Name, this, null, true));            
             this.supportStep = new st.Workflow.Steps.Support(supportProductATransition, supportProductBTransition, this);  
 
             this.sellProductA = new st.Workflow.Steps.SellProductA(this);  
