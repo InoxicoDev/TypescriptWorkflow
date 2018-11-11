@@ -31,6 +31,7 @@ node main.js
 * For each STEP
     * Individual model output on complete (Once done anyone can access this model)
     * Can only be complete when ready, only ready if parent is active step
+    * Each step has a primary transition so that a complext hierarchy can be projected in flat menu structure
 * For each TRANSITION
     * Each transition matches to the initialization contract of the next step (Moving them around will break design time)
     * Cannot change current state unless from a valid transition (Complete parent with ready child)
@@ -41,6 +42,7 @@ node main.js
     * Starting Step (Root step)
     * Holistic transition validation
     * Parent step invalidation (Propogate dirty to children, revoking completed state od children when parent change)
+    * Before any transition can be made the workflow gets validated (Primary transitions, future orphans)
     
 ```TypeScript
     Startup.stateMachine.startStep.CompleteStep(); // Model in this case is optional
