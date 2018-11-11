@@ -6,6 +6,7 @@
 ```powershell
 npm install -g typescript
 npm install guid-typescript --save
+npm i guid-typescript --save
 ```
 * Update NPM (Run PowerShell as Administrator)
 ```powershell
